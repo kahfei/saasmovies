@@ -8,43 +8,15 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.select("rating").map(&:rating).uniq
-    session[:ratings] ||= @all_ratings
-    session[:sort] ||= ''
-    @ratings = params[:ratings] ? params[:ratings] : session[:ratings]
-    @movies = Movie.order(@sort).where("rating = '#{@ratings}'")
+    params[:ratings] ? params[:ratings] : @all_ratings
     @sort = %w(title release_date).index(params[:sort]) ? params[:sort] : session[:sort]
+    if (params[:ratings])
+      @movies = Movie.order(@sort).find_all_by_rating(params[:ratings].keys)
+    else
+      @movies = Movie.order(@sort)
+    end
   end
 
-  #  def index
-  #   # standardize the ratings parameter so it's not a crazy checkbox hash
-  #   params[:ratings] = params[:ratings].keys if params[:ratings] && params[:ratings].respond_to?(:keys)
-
-  #   # redirect to saved preferences, if they're there
-  #   if !params[:ratings] && !params[:sort_by] && (session[:ratings] || session[:sort_by])
-  #     redirect_to action: 'index', ratings: session[:ratings], sort_by: session[:sort_by]
-  #   end
-
-  #   # for reference, get a list of every rating
-  #   @all_ratings = Movie.select("rating").map(&:rating).uniq
-
-  #   # if there isn't a session, create one
-  #   session[:ratings] ||= @all_ratings
-  #   session[:sort_by] ||= ''
-
-  #   # selected/cached ratings
-  #   @ratings = params[:ratings] ? params[:ratings] : session[:ratings]
-
-  #   # selected/cached sorting preference
-  #   # do some control checking to protect against SQL injections
-  #   @sort_by = %w(title release_date).index(params[:sort_by]) ? params[:sort_by] : session[:sort_by]
-
-  #   # fetch the movies
-  #   @movies = Movie.order(@sort_by).find_all_by_rating(@ratings)
-
-  #   # update the session
-  #   session[:ratings] = @ratings
-  #   session[:sort_by] = @sort_by
-  # end
 
   def new
     # default: render 'new' template
