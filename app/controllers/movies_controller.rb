@@ -8,6 +8,8 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.order(params[:sort])
+
+    @sort = %w(title release_date).index(params[:sort]) ? params[:sort] : session[:sort]
   end
 
   def new
