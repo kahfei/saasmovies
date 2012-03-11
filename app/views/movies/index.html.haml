@@ -7,7 +7,7 @@
   Include: 
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]"
+    = check_box_tag "ratings[#{rating}]", '', params[:ratings].index(rating), {id: "ratings_#{rating}"}
   = submit_tag 'Refresh'
 
 
