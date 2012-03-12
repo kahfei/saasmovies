@@ -7,7 +7,7 @@
   Include: 
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", '', params[:ratings], {id: "ratings_#{rating}"}
+    = check_box_tag "ratings[#{rating}]"
   = submit_tag 'Refresh'
 
 /   Make sure that your form elements have the following ids. The submit button for
