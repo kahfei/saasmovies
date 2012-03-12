@@ -7,8 +7,15 @@
   Include: 
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", '', params[:ratings].index(rating), {id: "ratings_#{rating}"}
+    = check_box_tag "ratings[#{rating}]", '', params[:ratings], {id: "ratings_#{rating}"}
   = submit_tag 'Refresh'
+
+/   Make sure that your form elements have the following ids. The submit button for
+/ filtering by ratings should have an HTML element id of ratings_submit. Each checkbox
+/ should have an HTML element id of ratings_#{rating}, where the interpolated rating
+/ should be the rating itself, such as “PG-13”, “G”. An example of an id for the checkbox
+/ for PG-13 is ratings_PG-13.
+
 
 
 %table#movies

@@ -7,6 +7,7 @@ class MoviesController < ApplicationController
   end
 
   def index
+    params[:ratings] = params[:ratings].keys if params[:ratings] && params[:ratings].respond_to?(:keys)
     @all_ratings = Movie.select("rating").map(&:rating).uniq
     params[:ratings] ? params[:ratings] : @all_ratings
     @sort = %w(title release_date).index(params[:sort]) ? params[:sort] : session[:sort]
